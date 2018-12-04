@@ -1,10 +1,10 @@
-Feature: Mobile Billing Login Page
+Feature: Cap Book Login Page
 This feature is used by user to login
 
 Scenario: User wants to Login 
 Given User is on Login Page
 When Users enters wrong credentials
-Then  Incorrect mobile message should display
+Then  Incorrect Credentials message should display
 
 
 Scenario: User wants to Login 

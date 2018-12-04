@@ -1,5 +1,7 @@
 package com.cg.capbook.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +19,8 @@ public class CapBookServicesImpl implements CapBookServices {
 	ProfileDAO profileDAO;
 	@Override
 	public Users acceptUserDetails(Users user) {
-			return usersDAO.save(user);
+			user = usersDAO.save(user);
+			return user;
 	}
 
 	@Override
@@ -27,12 +30,46 @@ public class CapBookServicesImpl implements CapBookServices {
 
 	@Override
 	public Users addFriendProfile(Profile profile, Users user) {
-		System.out.println("BIBIBI");
 		Users userFi = usersDAO.findById(user.getUserName()).get();
 		userFi.addFriend(profile);
-		
-		System.out.println("CICIC");
 		return usersDAO.save(userFi);
+	}
+
+	@Override
+	public Users loginUser(Users user) {
+		if(!user.getPassword().equals(null) && !user.getUserName().equals(null))
+			if(!usersDAO.findById(user.getUserName()).get().equals(null))
+				if(usersDAO.findById(user.getUserName()).get().getPassword().equals(user.getPassword()))
+					return usersDAO.findById(user.getUserName()).get();
+		return null;
+	}
+
+	@Override
+	public Users getUserDetails(String userName) {
+		Users user = usersDAO.findById(userName).get();
+		if(user!= null) return user;
+		
+		return null;
+	}
+
+	@Override
+	public List<Profile> searchFriend(String name) {
+		List<Profile> profiles = profileDAO.searchFriend(name);
+		if(profiles!=null) return profiles;
+		
+		return null;
+	}
+
+	@Override
+	public List<Users> getAllUserDetails() {
+		return usersDAO.findAll();
+		}
+	@Override
+	public Users updateUserDetails(Users user) {
+		Users temp = usersDAO.findById(user.getUserName()).get();
+		usersDAO.delete(user);
+		user.setFriends(temp.getFriends());
+		return usersDAO.save(user);
 	}
 
 }

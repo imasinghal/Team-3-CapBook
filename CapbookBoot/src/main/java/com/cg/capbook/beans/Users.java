@@ -40,6 +40,12 @@ public Profile getProfile() {
 public void setProfile(Profile profile) {
 	this.profile = profile;
 }
+public List<Profile> getFriends() {
+	return friends;
+}
+public void setFriends(List<Profile> friends) {
+	this.friends = friends;
+}
 //delete 
 public void addFriend(Profile profile) {
 	this.friends.add(profile);
@@ -52,6 +58,16 @@ public Users(String userName, String password, Profile profile) {
 }
 public Users() {
 	super();
+}
+public Users(String userName, String password) {
+	super();
+	this.userName = userName;
+	this.password = password;
+}
+@Override
+public String toString() {
+	return "Users [userName=" + userName + ", password=" + password + ", profile=" + profile + ", friends=" + friends
+			+ "]";
 }
 
 

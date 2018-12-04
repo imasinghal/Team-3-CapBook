@@ -82,6 +82,11 @@ public class Profile {
 		this.user = user;
 		
 	}
+	@Override
+	public String toString() {
+		return "Profile [name=" + name + ", gender=" + gender + ", phoneNo=" + phoneNo + ", dateOfBirth=" + dateOfBirth
+				+ ", bio=" + bio + ", emailId=" + emailId + ", user=" + user + "]";
+	}
 
 	
 	
