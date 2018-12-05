@@ -44,6 +44,12 @@ public class CapBookController {
 		Users user=service.getUserDetails(userName);
 		return new ResponseEntity<Users>(user,HttpStatus.OK);
 	}
+	@RequestMapping(value="/getProfileDetails",method=RequestMethod.GET,
+			produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
+	public ResponseEntity<Profile> getProfileDetails(@RequestParam("emailId") String emailId){
+		Profile profile = service.getProfileDetails(emailId);
+		return new ResponseEntity<Profile>(profile,HttpStatus.OK);
+	}
 	@RequestMapping(value="/searchFriend",method=RequestMethod.GET,
 			produces=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
 	public ResponseEntity<List<Profile>> searchFriend(@RequestParam("name") String name){
@@ -52,15 +58,6 @@ public class CapBookController {
 		return new ResponseEntity<List<Profile>>(profiles,HttpStatus.OK);
 	}
 	
-	/*@RequestMapping(value="/acceptUserFriends",method=RequestMethod.POST,
-			consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
-	public ResponseEntity<Users> acceptFriendDetails(@RequestBody Profile profile){
-		System.out.println("hihihi");
-		profile.setUser(temp);
-		Users user=service.addFriendProfile(profile, temp);
-		System.out.println("dididi");
-		return new ResponseEntity<Users>(user,HttpStatus.OK);
-	}*/
 	@RequestMapping(value="/loginUser",method=RequestMethod.POST,
 			consumes=MediaType.APPLICATION_JSON_VALUE,headers="Accept=application/json")
 	public ResponseEntity<Users> loginUser(@RequestBody Users user){

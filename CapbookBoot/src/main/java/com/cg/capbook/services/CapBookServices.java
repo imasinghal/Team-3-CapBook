@@ -9,6 +9,7 @@ public interface CapBookServices {
 	
 	public Users acceptUserDetails(Users user);
 	public Users getUserDetails(String userName);
+	public Profile getProfileDetails(String name);
 	public List<Profile> searchFriend(String name);
 	public List<Users> getAllUserDetails();
 	public Profile addUserProfile(Profile profile);

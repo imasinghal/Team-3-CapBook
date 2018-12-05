@@ -66,10 +66,22 @@ public class CapBookServicesImpl implements CapBookServices {
 		}
 	@Override
 	public Users updateUserDetails(Users user) {
+		System.out.println("1");
+		System.out.println(user.toString());
+		System.out.println("2");
 		Users temp = usersDAO.findById(user.getUserName()).get();
 		usersDAO.delete(user);
 		user.setFriends(temp.getFriends());
+		user.setPassword("789");
 		return usersDAO.save(user);
+	}
+
+	@Override
+	public Profile getProfileDetails(String emailId) {
+		Profile profile = profileDAO.findById(emailId).get();
+		if(profile!= null) return profile;
+		
+		return null;
 	}
 
 }
