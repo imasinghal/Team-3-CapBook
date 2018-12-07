@@ -20,17 +20,8 @@ public class Profile {
 	private String dateOfBirth;
 	private String bio;
 	@Id
-	private String emailId;
+	private String userName;
 	
-	@ManyToOne
-	private Users user;
-	
-	public Users getUser() {
-		return user;
-	}
-	public void setUser(Users user) {
-		this.user = user;
-	}
 	public String getName() {
 		return name;
 	}
@@ -61,31 +52,31 @@ public class Profile {
 	public void setBio(String bio) {
 		this.bio = bio;
 	}
-	public String getEmailId() {
-		return emailId;
+	
+	public String getUserName() {
+		return userName;
 	}
-	public void setEmailId(String emailId) {
-		this.emailId = emailId;
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public Profile() {
 		super();
 	}
-	public Profile(String name, String gender, String phoneNo, String dateOfBirth, String bio, String emailId,
-			Users user) {
+	public Profile(String name, String gender, String phoneNo, String dateOfBirth, String bio, String userName) {
 		super();
 		this.name = name;
 		this.gender = gender;
 		this.phoneNo = phoneNo;
 		this.dateOfBirth = dateOfBirth;
 		this.bio = bio;
-		this.emailId = emailId;
-		this.user = user;
+		this.userName = userName;
+		
 		
 	}
 	@Override
 	public String toString() {
 		return "Profile [name=" + name + ", gender=" + gender + ", phoneNo=" + phoneNo + ", dateOfBirth=" + dateOfBirth
-				+ ", bio=" + bio + ", emailId=" + emailId + ", user=" + user + "]";
+				+ ", bio=" + bio + ", userName=" + userName  + "]";
 	}
 
 	

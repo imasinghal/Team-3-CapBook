@@ -11,5 +11,3 @@ Scenario: User wants to Login
 Given User is on Login Page
 When User enters correct credentials
 Then  User should be logged in
-
-
