@@ -3,6 +3,7 @@ package com.cg.capbook.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.omg.PortableServer.Servant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -79,7 +80,7 @@ public class CapBookServicesImpl implements CapBookServices {
 		usersDAO.delete(user);
 		return usersDAO.save(user);
 	}
-
+	
 	@Override
 	public Users addFriend(String emailId, String userName) {
 		
@@ -129,13 +130,15 @@ public class CapBookServicesImpl implements CapBookServices {
 		note.setNotMsg(message);
 		note.setStatus(status);
 		note.setType(type);
-		note.setUser(new Users(emailId, "", new Profile(),friends , posts,notes));
-		note.setMsgTo(msgTo);
+		note.setUser(new Users(getEmailId(msgTo), "", new Profile(),friends , posts,notes));
+		note.setMsgTo(emailId);
+		note.setName(getName(emailId));
+		note.setMsgFrom(msgTo);
 		return notificationDAO.save(note);
 	}
 
 	@Override
-	public List<String> getAllNotification(String emailId) {
+	public List<Notification> getAllNotification(String emailId) {
 		return notificationDAO.getNotification(emailId);
 	}
 
@@ -169,6 +172,30 @@ public class CapBookServicesImpl implements CapBookServices {
 		Profile profile = profileDAO.findById(userName).get();
 		if(profile!= null) return profile;
 		
+		return null;
+	}
+
+	@Override
+	public String getUserName(String emailId) {
+		return usersDAO.getUserName(emailId);
+	}
+
+	@Override
+	public String getEmailId(String userName) {
+		return usersDAO.getEmailId(userName);
+	}
+
+	@Override
+	public String getName(String emailId) {
+		System.out.println("emai is "+emailId);
+		Users user = usersDAO.findById(emailId).get();
+		System.out.println("name is "+user.getProfile().getName());
+		return user.getProfile().getName();
+	}
+
+	@Override
+	public Notification removeNotification(int notId) {
+		 notificationDAO.deleteById(notId);
 		return null;
 	}
 }

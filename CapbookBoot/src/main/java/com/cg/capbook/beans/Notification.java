@@ -21,6 +21,26 @@ public class Notification {
 	private String type;
 	private String status;//either reject or accept
 	private String msgTo;
+	private String msgFrom;
+	@Override
+	public String toString() {
+		return "Notification [id=" + id + ", notMsg=" + notMsg + ", type=" + type + ", status=" + status + ", msgTo="
+				+ msgTo + ", msgFrom=" + msgFrom + ", name=" + name + ", user=" + user + "]";
+	}
+
+
+
+	public String getMsgFrom() {
+		return msgFrom;
+	}
+
+
+
+	public void setMsgFrom(String msgFrom) {
+		this.msgFrom = msgFrom;
+	}
+
+	private String name;
 	
 	@JsonBackReference
 	@ManyToOne
@@ -36,11 +56,20 @@ public class Notification {
 		this.user = user;
 	}
 
-	@Override
-	public String toString() {
-		return "Notification [id=" + id + ", notMsg=" + notMsg + ", type=" + type + ", status=" + status + ", msgTo="
-				+ msgTo + ", user=" + user + "]";
+	
+
+	public Notification(int id, String notMsg, String type, String status, String msgTo, String name, Users user) {
+		super();
+		this.id = id;
+		this.notMsg = notMsg;
+		this.type = type;
+		this.status = status;
+		this.msgTo = msgTo;
+		this.name = name;
+		this.user = user;
 	}
+
+
 
 	public String getMsgTo() {
 		return msgTo;
@@ -90,6 +119,13 @@ public class Notification {
 		this.user = user;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public Notification() {
 		super();
