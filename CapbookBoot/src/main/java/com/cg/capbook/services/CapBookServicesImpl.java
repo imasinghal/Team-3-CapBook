@@ -1,24 +1,44 @@
 package com.cg.capbook.services;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.URL;
+import java.sql.Blob;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
+
+import org.apache.commons.io.IOUtils;
 import org.omg.PortableServer.Servant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cg.capbook.beans.Friend;
 import com.cg.capbook.beans.Notification;
+import com.cg.capbook.beans.Photo;
 import com.cg.capbook.beans.Post;
 import com.cg.capbook.beans.Profile;
 import com.cg.capbook.beans.Users;
 import com.cg.capbook.dao.FriendDAO;
 import com.cg.capbook.dao.NotificationDAO;
+import com.cg.capbook.dao.PhotoDAO;
 import com.cg.capbook.dao.PostDAO;
 import com.cg.capbook.dao.ProfileDAO;
 import com.cg.capbook.dao.UsersDAO;
+import com.cg.capbook.exceptions.CapBookServicesDownException;
+import com.cg.capbook.exceptions.ProfileNotFoundException;
 import com.cg.capbook.exceptions.UserNotFoundException;
-import com.sun.jna.platform.win32.Netapi32Util.User;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.ImgWMF;
 
 import antlr.collections.impl.LList;
 
@@ -35,6 +55,8 @@ public class CapBookServicesImpl implements CapBookServices {
 	PostDAO postDAO;
 	@Autowired
 	NotificationDAO notificationDAO;
+	@Autowired
+	PhotoDAO photoDAO;
 	
 	@Override
 	public Users acceptUserDetails(Users user) {
@@ -69,7 +91,6 @@ public class CapBookServicesImpl implements CapBookServices {
 
 	@Override
 	public List<Profile> getAllProfiles(String name) {
-		System.out.println(name);
 		System.out.println(profileDAO.getProfiles(name));
 		return profileDAO.getProfiles(name);
 	}
@@ -101,8 +122,7 @@ public class CapBookServicesImpl implements CapBookServices {
 
 	@Override
 	public List<String> getAllFriends(String emailId) {
-		System.out.println("EHLLO");
-	return friendDAO.getFriends(emailId);
+		return friendDAO.getFriends(emailId);
 	}
 
 	@Override
@@ -198,4 +218,72 @@ public class CapBookServicesImpl implements CapBookServices {
 		 notificationDAO.deleteById(notId);
 		return null;
 	}
+
+	@Override
+	public Users addFriendRequest(String emailId, String userName) {
+		Notification note = new Notification();
+		List<Friend> friends=new ArrayList<Friend>();
+		List<Post> posts=new ArrayList<Post>();
+		List<Notification> notes=new ArrayList<Notification>();
+		note.setNotMsg("You have received a friend request from "+getUserName(emailId));
+		note.setStatus("pending");
+		note.setType("request");
+		System.out.println("email is "+emailId+" username is "+userName);
+		note.setUser(new Users(getEmailId(userName), "", new Profile(),friends , posts,notes));
+		note.setMsgTo(getEmailId(userName));
+		note.setName(getName(emailId));
+		note.setMsgFrom(getUserName(emailId));
+		notificationDAO.save(note); 
+		return null;
+	}
+
+	@Override
+	public List<Profile> getAllFriendsProfiles(String emailId)
+			throws ProfileNotFoundException, CapBookServicesDownException {
+		List<String> friendsUserName = friendDAO.getFriendsUserName(emailId);
+		List<Profile> profiles = new ArrayList<Profile>();
+		for (String userName : friendsUserName) {
+			profiles.add(profileDAO.findById(userName).get());
+		}
+		return profiles;
+	}
+
+	@Override
+	public int addPhoto(String emailId) {
+		Users user = new Users();
+		user.setEmailId(emailId);
+		Photo photo =new Photo();
+		photo.setType("profile");
+		photo.setUser(user);
+		return photoDAO.save(photo).getPhotoId();
+		
+	}
+
+	@Override
+	public int getMaxPhotoId() {
+		return photoDAO.getMaxId();
+	}
+
+	@Override
+	public int getUserPhotoId(String emailId) {
+		return photoDAO.getId(emailId);
+		
+	}
+	@Override
+	public List<BigDecimal> getAllUserPhotoId(String emailId) {
+		
+		return photoDAO.getAllId(emailId);
+	}
+	
+	@Override
+	public List<Post> removePost(int postId) {
+		postDAO.deleteById(postId);
+		List<Post> postList = postDAO.findAll();
+		return postList;
+		
+	}
+
+	
+
+
 }

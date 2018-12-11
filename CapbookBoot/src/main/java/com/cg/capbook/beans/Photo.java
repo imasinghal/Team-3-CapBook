@@ -15,8 +15,6 @@ public class Photo {
 	@GeneratedValue(strategy=GenerationType.SEQUENCE,generator="photo_seq")
 	private int photoId;
 	
-	@Lob
-	private byte[] photo;
 	private String type;
 	
 	@ManyToOne
@@ -28,14 +26,6 @@ public class Photo {
 
 	public void setPhotoId(int photoId) {
 		this.photoId = photoId;
-	}
-
-	public byte[] getPhoto() {
-		return photo;
-	}
-
-	public void setPhoto(byte[] photo) {
-		this.photo = photo;
 	}
 
 	public String getType() {
@@ -54,12 +44,15 @@ public class Photo {
 		this.user = user;
 	}
 
-	public Photo(int photoId, byte[] photo, String type, Users user) {
+	public Photo(int photoId, String type, Users user) {
 		super();
 		this.photoId = photoId;
-		this.photo = photo;
 		this.type = type;
 		this.user = user;
+	}
+
+	public Photo() {
+		super();
 	}
 		
 }

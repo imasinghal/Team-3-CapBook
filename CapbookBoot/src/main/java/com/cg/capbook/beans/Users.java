@@ -24,6 +24,7 @@ public class Users {
 	private String password;
 	@OneToOne(fetch=FetchType.EAGER,cascade=CascadeType.ALL,orphanRemoval=true)
 	private Profile profile;
+	private String securityQuestion;
 
 
 	@JsonManagedReference
@@ -82,6 +83,14 @@ public class Users {
 	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
+	
+	public String getSecurityQuestion() {
+		return securityQuestion;
+	}
+
+	public void setSecurityQuestion(String securityQuestion) {
+		this.securityQuestion = securityQuestion;
+	}
 
 	public Users(String emailId, String password, Profile profile, List<Friend> friends, List<Post> posts,
 			List<Notification> notes) {
@@ -93,11 +102,25 @@ public class Users {
 		this.posts = posts;
 		this.notes = notes;
 	}
+	
+	public Users(String emailId, String password, Profile profile, String securityQuestion, List<Friend> friends,
+			List<Post> posts, List<Notification> notes) {
+		super();
+		this.emailId = emailId;
+		this.password = password;
+		this.profile = profile;
+		this.securityQuestion = securityQuestion;
+		this.friends = friends;
+		this.posts = posts;
+		this.notes = notes;
+	}
 
+	
+	
 	@Override
 	public String toString() {
-		return "Users [emailId=" + emailId + ", password=" + password + ", profile=" + profile + ", friends=" + friends
-				+ ", posts=" + posts + ", notes=" + notes + "]";
+		return "Users [emailId=" + emailId + ", password=" + password + ", profile=" + profile + ", securityQuestion="
+				+ securityQuestion + ", friends=" + friends + ", posts=" + posts + ", notes=" + notes + "]";
 	}
 
 	public Users() {
